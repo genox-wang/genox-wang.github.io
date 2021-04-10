@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|EB Garamond:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="编译原生支持https:&#x2F;&#x2F;www.npmjs.com&#x2F;package&#x2F;cordova-template-framework7-vue-webpack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Template Vue 使用笔记">
+<meta property="og:url" content="http://example.com/2017/05/03/Template-Vue-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Genox">
+<meta property="og:description" content="编译原生支持https:&#x2F;&#x2F;www.npmjs.com&#x2F;package&#x2F;cordova-template-framework7-vue-webpack">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-05-03T04:30:58.000Z">
+<meta property="article:modified_time" content="2021-04-10T04:41:59.513Z">
+<meta property="article:author" content="Genox Wang">
+<meta property="article:tag" content="vue">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="framework7">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2017/05/03/Template-Vue-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Template Vue 使用笔记 | Genox</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Genox</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">绽放时厚积薄发 等待时心如止水</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/genox-wang" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/05/03/Template-Vue-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Genox Wang">
+      <meta itemprop="description" content="绽放时厚积薄发 等待时心如止水">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Genox">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Template Vue 使用笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-05-03 12:30:58" itemprop="dateCreated datePublished" datetime="2017-05-03T12:30:58+08:00">2017-05-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-10 12:41:59" itemprop="dateModified" datetime="2021-04-10T12:41:59+08:00">2021-04-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%B7%A8%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">跨平台开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="编译原生支持"><a href="#编译原生支持" class="headerlink" title="编译原生支持"></a>编译原生支持</h2><p><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/cordova-template-framework7-vue-webpack">https://www.npmjs.com/package/cordova-template-framework7-vue-webpack</a></p>
+<span id="more"></span>
+
+<h2 id="Framework7-Vue-Webpack-Template"><a href="#Framework7-Vue-Webpack-Template" class="headerlink" title="Framework7-Vue-Webpack-Template"></a>Framework7-Vue-Webpack-Template</h2><p><a target="_blank" rel="noopener" href="https://github.com/nolimits4web/Framework7-Vue-Webpack-Template">https://github.com/nolimits4web/Framework7-Vue-Webpack-Template</a></p>
+<p>使用本地静态资源</p>
+<p>参考<a target="_blank" rel="noopener" href="http://www.jianshu.com/p/f82c5ecbd3a5">http://www.jianshu.com/p/f82c5ecbd3a5</a></p>
+<h3 id="静态资源放入-static-目录-参考Express中提取静态资源"><a href="#静态资源放入-static-目录-参考Express中提取静态资源" class="headerlink" title="静态资源放入/static/目录 参考Express中提取静态资源"></a>静态资源放入/static/目录 参考Express中提取静态资源</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//build/dev-server.js</span></span><br><span class="line"><span class="comment">// serve pure static assets</span></span><br><span class="line"><span class="keyword">var</span> staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)</span><br><span class="line">app.use(staticPath, express.static(<span class="string">&#x27;./static&#x27;</span>)) <span class="comment">//为静态路径创建虚拟路劲前缀</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="模板配置有问题，需要修改-config-index-js"><a href="#模板配置有问题，需要修改-config-index-js" class="headerlink" title="模板配置有问题，需要修改/config/index.js"></a>模板配置有问题，需要修改<code>/config/index.js</code></h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">assetsPublicPath: <span class="string">&#x27;/&#x27;</span>,  <span class="comment">//assetsPublicPath 都改成根目录</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="运行使用"><a href="#运行使用" class="headerlink" title="运行使用"></a>运行使用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm run dev</span><br><span class="line"><span class="comment"># 然后就可以在 localhost:8080/static/xxx 下使用静态资源了</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="vue-的警告处理"><a href="#vue-的警告处理" class="headerlink" title="vue 的警告处理"></a>vue 的警告处理</h2><p>修改<code>node_modules/framework7-vue/dist/framework7-vue.min.js</code><br>所有的<code>style:Sting</code> 修改为 <code>a_style:String</code></p>
+<h2 id="我的-App-vue"><a href="#我的-App-vue" class="headerlink" title="我的 App.vue"></a>我的 App.vue</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- App --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;app&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Statusbar --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">f7-statusbar</span>&gt;</span><span class="tag">&lt;/<span class="name">f7-statusbar</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Main Views --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">f7-views</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">f7-view</span> <span class="attr">id</span>=<span class="string">&quot;main-view&quot;</span> <span class="attr">navbar-through</span> <span class="attr">toolbar-through</span> <span class="attr">main</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- iOS Theme Navbar --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">f7-navbar</span> <span class="attr">v-if</span>=<span class="string">&quot;$theme.ios&quot;</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">f7-nav-left</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">f7-link</span> <span class="attr">iconF7</span>=<span class="string">&quot;search&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">f7-link</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">f7-nav-left</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">f7-nav-center</span>&gt;</span>Memei<span class="tag">&lt;/<span class="name">f7-nav-center</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">f7-nav-right</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">f7-link</span> <span class="attr">iconF7</span>=<span class="string">&quot;data&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">f7-link</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">f7-nav-right</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">f7-navbar</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- Pages --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">f7-pages</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">f7-page</span> <span class="attr">id</span>=<span class="string">&quot;main&quot;</span> <span class="attr">hide-bars-on-scroll</span> <span class="attr">infinite-scroll</span> @<span class="attr">infinite</span>=<span class="string">&quot;onInfiniteScroll&quot;</span> <span class="attr">pull-to-refresh</span> @<span class="attr">ptr:refresh</span>=<span class="string">&quot;onRefresh&quot;</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- Material Theme Navbar --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">f7-navbar</span> <span class="attr">v-if</span>=<span class="string">&quot;$theme.material&quot;</span> <span class="attr">back-link</span>=<span class="string">&quot;Back&quot;</span> <span class="attr">sliding</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">f7-nav-center</span>&gt;</span>Memei<span class="tag">&lt;/<span class="name">f7-nav-center</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">f7-navbar</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;tabs&quot;</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;tab-1&quot;</span> <span class="attr">class</span>=<span class="string">&quot;tab active&quot;</span>&gt;</span></span><br><span class="line">                Tab1</span><br><span class="line">              <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;tab-2&quot;</span> <span class="attr">class</span>=<span class="string">&quot;tab&quot;</span>&gt;</span></span><br><span class="line">                Tab2</span><br><span class="line">              <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;tab-3&quot;</span> <span class="attr">class</span>=<span class="string">&quot;tab&quot;</span>&gt;</span></span><br><span class="line">                Tab3</span><br><span class="line">              <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">f7-page</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">f7-pages</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">f7-toolbar</span> <span class="attr">tabbar</span> <span class="attr">labels</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">f7-link</span> <span class="attr">iconF7</span>=<span class="string">&quot;home&quot;</span>  <span class="attr">text</span>=<span class="string">&quot;最新&quot;</span> <span class="attr">tab-link</span>=<span class="string">&quot;#tab-1&quot;</span> <span class="attr">active</span>&gt;</span><span class="tag">&lt;/<span class="name">f7-link</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">f7-link</span> <span class="attr">iconF7</span>=<span class="string">&quot;keyboard&quot;</span> <span class="attr">text</span>=<span class="string">&quot;分类&quot;</span> <span class="attr">tab-link</span>=<span class="string">&quot;#tab-2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">f7-link</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">f7-link</span> <span class="attr">iconF7</span>=<span class="string">&quot;heart&quot;</span> <span class="attr">text</span>=<span class="string">&quot;最热&quot;</span> <span class="attr">tab-link</span>=<span class="string">&quot;#tab-3&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">f7-link</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">f7-toolbar</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">f7-view</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">f7-views</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="面板"><a href="#面板" class="headerlink" title="面板"></a>面板</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Left Panel with &quot;cover&quot; effect --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">f7-panel</span> <span class="attr">left</span> <span class="attr">cover</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">f7-view</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">f7-pages</span> <span class="attr">navbar-fixed</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">f7-page</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">f7-navbar</span> <span class="attr">title</span>=<span class="string">&quot;Left Panel&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">f7-navbar</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">f7-block</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">p</span>&gt;</span>Here comes the left panel text<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">f7-block</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">f7-page</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">f7-pages</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">f7-view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">f7-panel</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Right Panel with &quot;reveal&quot; effect --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">f7-panel</span> <span class="attr">right</span> <span class="attr">reveal</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">f7-view</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">f7-pages</span> <span class="attr">navbar-fixed</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">f7-page</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">f7-navbar</span> <span class="attr">title</span>=<span class="string">&quot;Right Panel&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">f7-navbar</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">f7-block</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">p</span>&gt;</span>Here comes the right panel text<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">f7-block</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">f7-page</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">f7-pages</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">f7-view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">f7-panel</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">&#x27;#app&#x27;</span>,</span><br><span class="line">  framework7: &#123;</span><br><span class="line">    root: <span class="string">&#x27;#app&#x27;</span>,</span><br><span class="line">    <span class="comment">// Map routes</span></span><br><span class="line">    routes:  [</span><br><span class="line">      &#123;</span><br><span class="line">          path: <span class="string">&#x27;/about/&#x27;</span>,</span><br><span class="line">          component: <span class="built_in">require</span>(<span class="string">&#x27;./pages/about.vue&#x27;</span>)</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        path: <span class="string">&#x27;/form/&#x27;</span>,</span><br><span class="line">        component: <span class="built_in">require</span>(<span class="string">&#x27;./pages/form.vue&#x27;</span>)</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        path: <span class="string">&#x27;/dynamic-route/blog/:blogId/post/:postId/&#x27;</span>,</span><br><span class="line">        component: <span class="built_in">require</span>(<span class="string">&#x27;./pages/dynamic-route.vue&#x27;</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="搜索栏"><a href="#搜索栏" class="headerlink" title="搜索栏"></a>搜索栏</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;f7-searchbar</span><br><span class="line">  cancel-link=<span class="string">&quot;Cancel&quot;</span></span><br><span class="line">  placeholder=<span class="string">&quot;Search in items&quot;</span></span><br><span class="line">  :clear=<span class="string">&quot;true&quot;</span></span><br><span class="line">&gt;</span><br><span class="line">  &lt;div slot=<span class="string">&quot;before-input&quot;</span>&gt;Before Input&lt;/div&gt;</span><br><span class="line">  &lt;div slot=<span class="string">&quot;after-input&quot;</span>&gt;After Input&lt;/div&gt;</span><br><span class="line">&lt;/f7-searchbar&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="格栅"><a href="#格栅" class="headerlink" title="格栅"></a>格栅</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">f7-grid</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">f7-col</span> <span class="attr">width</span>=<span class="string">&quot;50&quot;</span> <span class="attr">tablet-width</span>=<span class="string">&quot;25&quot;</span>&gt;</span>Col 1<span class="tag">&lt;/<span class="name">f7-col</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">f7-col</span> <span class="attr">width</span>=<span class="string">&quot;50&quot;</span> <span class="attr">tablet-width</span>=<span class="string">&quot;25&quot;</span>&gt;</span>Col 2<span class="tag">&lt;/<span class="name">f7-col</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">f7-col</span> <span class="attr">width</span>=<span class="string">&quot;50&quot;</span> <span class="attr">tablet-width</span>=<span class="string">&quot;25&quot;</span>&gt;</span>Col 3<span class="tag">&lt;/<span class="name">f7-col</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">f7-col</span> <span class="attr">width</span>=<span class="string">&quot;50&quot;</span> <span class="attr">tablet-width</span>=<span class="string">&quot;25&quot;</span>&gt;</span>Col 4<span class="tag">&lt;/<span class="name">f7-col</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">f7-grid</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="列表Card"><a href="#列表Card" class="headerlink" title="列表Card"></a>列表Card</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;card&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;card-header&quot;</span>&gt;</span>Card Title<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;card-content&quot;</span>&gt;</span>Card Content<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;card-footer&quot;</span>&gt;</span>Card Footer<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="icons"><a href="#icons" class="headerlink" title="icons"></a>icons</h2><p>安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install framework7-icons --save</span><br></pre></td></tr></table></figure>
+
+<p>使用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.js</span></span><br><span class="line"><span class="keyword">import</span> Framework7Icons <span class="keyword">from</span> <span class="string">&#x27;framework7-icons/css/framework7-icons.css&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- taemplate-vue中使用 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">f7-link</span> <span class="attr">iconF7</span>=<span class="string">&quot;heart&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">f7-link</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- Default back icon --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">f7-icon</span> <span class="attr">icon</span>=<span class="string">&quot;icon-back&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">f7-icon</span>&gt;</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">&lt;!-- F7 Icons font icon --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">f7-icon</span> <span class="attr">f7</span>=<span class="string">&quot;home&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">f7-icon</span>&gt;</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">&lt;!-- Material Icons font icon --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">f7-icon</span> <span class="attr">material</span>=<span class="string">&quot;home&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">f7-icon</span>&gt;</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">&lt;!-- F7 icons font icon with custom size and color --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">f7-icon</span> <span class="attr">f7</span>=<span class="string">&quot;home&quot;</span> <span class="attr">size</span>=<span class="string">&quot;44px&quot;</span> <span class="attr">color</span>=<span class="string">&quot;blue&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">f7-icon</span>&gt;</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">&lt;!-- Conditional icon --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">f7-icon</span> <span class="attr">if-ios</span>=<span class="string">&quot;f7:home&quot;</span> <span class="attr">if-material</span>=<span class="string">&quot;material:home&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">f7-icon</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://framework7.io/icons/">对照表</a></p>
+<h2 id="无限滚动、下拉刷新、滚动隐藏bars"><a href="#无限滚动、下拉刷新、滚动隐藏bars" class="headerlink" title="无限滚动、下拉刷新、滚动隐藏bars"></a>无限滚动、下拉刷新、滚动隐藏bars</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"> &lt;f7-page id=<span class="string">&quot;main&quot;</span> hide-bars-on-scroll infinite-scroll @infinite=<span class="string">&quot;onInfiniteScroll&quot;</span> pull-to-refresh @ptr:refresh=<span class="string">&quot;onRefresh&quot;</span>&gt;</span><br><span class="line"> &lt;/f7-page&gt;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  methods: &#123;</span><br><span class="line">    onInfiniteScroll: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span>(<span class="built_in">this</span>.isLoading) &#123; <span class="keyword">return</span> &#125;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&#x27;onInfiniteScroll&#x27;</span>)</span><br><span class="line">      <span class="built_in">this</span>.isLoading = <span class="literal">true</span></span><br><span class="line">      <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// 在这里添加新元素</span></span><br><span class="line">        <span class="built_in">this</span>.isLoading = <span class="literal">false</span></span><br><span class="line">      &#125;, <span class="number">2000</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">    onRefresh: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.$f7.pullToRefreshDone()<span class="comment">//刷新完成</span></span><br><span class="line">      &#125;, <span class="number">1000</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="按钮"><a href="#按钮" class="headerlink" title="按钮"></a>按钮</h2><h2 id="列表表单"><a href="#列表表单" class="headerlink" title="列表表单"></a>列表表单</h2><h2 id="幻灯片-图片预览"><a href="#幻灯片-图片预览" class="headerlink" title="幻灯片/图片预览"></a>幻灯片/图片预览</h2><h2 id="懒加载"><a href="#懒加载" class="headerlink" title="懒加载"></a>懒加载</h2><h2 id="icons-1"><a href="#icons-1" class="headerlink" title="icons"></a>icons</h2><h2 id="ajax"><a href="#ajax" class="headerlink" title="ajax"></a>ajax</h2>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/vue/" rel="tag"># vue</a>
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/framework7/" rel="tag"># framework7</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/05/03/ESlint-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/" rel="prev" title="ESlint 使用笔记">
+      <i class="fa fa-chevron-left"></i> ESlint 使用笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/05/08/Stylus-%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%E6%95%B4%E7%90%86/" rel="next" title="Stylus 基础语法整理">
+      Stylus 基础语法整理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%8E%9F%E7%94%9F%E6%94%AF%E6%8C%81"><span class="nav-number">1.</span> <span class="nav-text">编译原生支持</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Framework7-Vue-Webpack-Template"><span class="nav-number">2.</span> <span class="nav-text">Framework7-Vue-Webpack-Template</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E6%94%BE%E5%85%A5-static-%E7%9B%AE%E5%BD%95-%E5%8F%82%E8%80%83Express%E4%B8%AD%E6%8F%90%E5%8F%96%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90"><span class="nav-number">2.1.</span> <span class="nav-text">静态资源放入&#x2F;static&#x2F;目录 参考Express中提取静态资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E9%85%8D%E7%BD%AE%E6%9C%89%E9%97%AE%E9%A2%98%EF%BC%8C%E9%9C%80%E8%A6%81%E4%BF%AE%E6%94%B9-config-index-js"><span class="nav-number">2.2.</span> <span class="nav-text">模板配置有问题，需要修改&#x2F;config&#x2F;index.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E4%BD%BF%E7%94%A8"><span class="nav-number">2.3.</span> <span class="nav-text">运行使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vue-%E7%9A%84%E8%AD%A6%E5%91%8A%E5%A4%84%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">vue 的警告处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E7%9A%84-App-vue"><span class="nav-number">4.</span> <span class="nav-text">我的 App.vue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%A2%E6%9D%BF"><span class="nav-number">5.</span> <span class="nav-text">面板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1"><span class="nav-number">6.</span> <span class="nav-text">路由</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2%E6%A0%8F"><span class="nav-number">7.</span> <span class="nav-text">搜索栏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%BC%E6%A0%85"><span class="nav-number">8.</span> <span class="nav-text">格栅</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E8%A1%A8Card"><span class="nav-number">9.</span> <span class="nav-text">列表Card</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#icons"><span class="nav-number">10.</span> <span class="nav-text">icons</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E9%99%90%E6%BB%9A%E5%8A%A8%E3%80%81%E4%B8%8B%E6%8B%89%E5%88%B7%E6%96%B0%E3%80%81%E6%BB%9A%E5%8A%A8%E9%9A%90%E8%97%8Fbars"><span class="nav-number">11.</span> <span class="nav-text">无限滚动、下拉刷新、滚动隐藏bars</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%89%E9%92%AE"><span class="nav-number">12.</span> <span class="nav-text">按钮</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E8%A1%A8%E8%A1%A8%E5%8D%95"><span class="nav-number">13.</span> <span class="nav-text">列表表单</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BB%E7%81%AF%E7%89%87-%E5%9B%BE%E7%89%87%E9%A2%84%E8%A7%88"><span class="nav-number">14.</span> <span class="nav-text">幻灯片&#x2F;图片预览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%87%92%E5%8A%A0%E8%BD%BD"><span class="nav-number">15.</span> <span class="nav-text">懒加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#icons-1"><span class="nav-number">16.</span> <span class="nav-text">icons</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ajax"><span class="nav-number">17.</span> <span class="nav-text">ajax</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Genox Wang"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Genox Wang</p>
+  <div class="site-description" itemprop="description">绽放时厚积薄发 等待时心如止水</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备16022482号-2 </a>
+      <img src="/images/beian.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011702006305" rel="noopener" target="_blank">沪公安备案31011702006305号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Genox Wang</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

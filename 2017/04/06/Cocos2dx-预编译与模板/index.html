@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|EB Garamond:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="一条命令创建预编译洁净Cocos2dx工程 前言 新建的Cocos2dx工程第一次编译至少十分钟，打包Android工程又需要再花十分钟左右再编译一次。每次新建项目都要再次把这些时间浪费在编译上。  当你想发布版本到Appstore,你需要Archive。有无限提交失败经验的人应该知道那是有多崩溃。  想要给游戏添加网上开源的模块，但又不确定可行性。最理想的方式就是应该建一个新项目，克隆代码，测试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cocos2dx 预编译与模板">
+<meta property="og:url" content="http://example.com/2017/04/06/Cocos2dx-%E9%A2%84%E7%BC%96%E8%AF%91%E4%B8%8E%E6%A8%A1%E6%9D%BF/index.html">
+<meta property="og:site_name" content="Genox">
+<meta property="og:description" content="一条命令创建预编译洁净Cocos2dx工程 前言 新建的Cocos2dx工程第一次编译至少十分钟，打包Android工程又需要再花十分钟左右再编译一次。每次新建项目都要再次把这些时间浪费在编译上。  当你想发布版本到Appstore,你需要Archive。有无限提交失败经验的人应该知道那是有多崩溃。  想要给游戏添加网上开源的模块，但又不确定可行性。最理想的方式就是应该建一个新项目，克隆代码，测试">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-04-06T01:58:13.000Z">
+<meta property="article:modified_time" content="2021-04-10T02:16:07.950Z">
+<meta property="article:author" content="Genox Wang">
+<meta property="article:tag" content="cocos">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2017/04/06/Cocos2dx-%E9%A2%84%E7%BC%96%E8%AF%91%E4%B8%8E%E6%A8%A1%E6%9D%BF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Cocos2dx 预编译与模板 | Genox</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Genox</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">绽放时厚积薄发 等待时心如止水</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/genox-wang" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/04/06/Cocos2dx-%E9%A2%84%E7%BC%96%E8%AF%91%E4%B8%8E%E6%A8%A1%E6%9D%BF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Genox Wang">
+      <meta itemprop="description" content="绽放时厚积薄发 等待时心如止水">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Genox">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Cocos2dx 预编译与模板
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-04-06 09:58:13" itemprop="dateCreated datePublished" datetime="2017-04-06T09:58:13+08:00">2017-04-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-10 10:16:07" itemprop="dateModified" datetime="2021-04-10T10:16:07+08:00">2021-04-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%B7%A8%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">跨平台开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>一条命令创建预编译洁净Cocos2dx工程</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><ul>
+<li><p>新建的Cocos2dx工程第一次编译至少十分钟，打包Android工程又需要再花十分钟左右再编译一次。每次新建项目都要再次把这些时间浪费在编译上。</p>
+</li>
+<li><p>当你想发布版本到Appstore,你需要Archive。有无限提交失败经验的人应该知道那是有多崩溃。</p>
+</li>
+<li><p>想要给游戏添加网上开源的模块，但又不确定可行性。最理想的方式就是应该建一个新项目，克隆代码，测试功能，然后再用到生产环境中。但新项目的编译阴影要么让我放弃了好模块的引入，要么就是直接引入造成一系列BUG！</p>
+</li>
+</ul>
+<span id="more"></span>
+
+<p>受到这个<a target="_blank" rel="noopener" href="https://forum.cocos.org/t/cocos2d-x-3-13-1/40167">帖子</a>的启发 我决定拔掉这根刺了！ 找了些资料自己做了下尝试，准备从模板，预编译，相关配置，解决这些烦恼。</p>
+<p>想要达到的效果是<code>cocos new project_name -p package -l cpp -t template</code>这一条命令就完成所有需要的配置，之后的开发只需要关心业务需求。不需要额外配置，无论ios还是android都是可以10秒内完成编译</p>
+<h2 id="预编译类库"><a href="#预编译类库" class="headerlink" title="预编译类库"></a>预编译类库</h2><p>修改Android以下项目配置文件，修改目标安卓版本到你已安装的版本</p>
+<ul>
+<li>预编译目标项目：<code>cocos2d-x-3.13.1\tools\simulator\frameworks\runtime-src\proj.android\project.properties</code></li>
+<li><code>cocos2d-x-3.13.1\cocos\platform\android\java\project.properties</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">target&#x3D;android-19</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意！</p>
+</blockquote>
+<blockquote>
+<p><code>ANDROID_SDK_ROOT</code>环境变量cocos2dx只认bash的，也就是无论你使用哪个shell,都必须保证<code>~/.bash_profile</code>文件内配置的环境变量正确，否则会找不到SDK<br>如果以前预编译过，请删除<code>cocos2d-x-3.13.1\tools\simulator\frameworks\runtime-src\proj.android\obj</code>目录再重新编译</p>
+</blockquote>
+<p>使用<code>gen-libs</code>命令预编译类库,编译完的类库在<code>$(COCOS2DX_ROOT)/prebuilt</code>,这里不能用<code>-m debug</code>，<a target="_blank" rel="noopener" href="https://discuss.cocos2d-x.org/t/how-to-speed-up-cocos2d-x-build-with-prebuilt-lib/23402/68">原因</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cocos gen-libs -p ios -p android</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>lipo</code>命令查看静态链接库a支持的构架</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lipo -info /Usashers/bill/sdks/Cocos2d-x/cocos2d-x-3.13.1/prebuilt/ios/libcocos2d\ iOS.a</span><br><span class="line"><span class="comment">#-m debug不支持x86_64 arm64 无法跑模拟器和真机</span></span><br><span class="line">Architectures <span class="keyword">in</span> the fat file: /Users/bill/sdks/Cocos2d-x/cocos2d-x-3.13.1/prebuilt/ios/libcocos2d iOS.a are: i386 armv7</span><br><span class="line"><span class="comment">#不添加-m debug</span></span><br><span class="line">Architectures <span class="keyword">in</span> the fat file: /Users/bill/sdks/Cocos2d-x/cocos2d-x-3.13.1/prebuilt/ios/libcocos2d iOS.a are: i386 armv7 x86_64 arm64</span><br></pre></td></tr></table></figure>
+
+<h2 id="自定义模板"><a href="#自定义模板" class="headerlink" title="自定义模板"></a>自定义模板</h2><h3 id="删除不需要的目录"><a href="#删除不需要的目录" class="headerlink" title="删除不需要的目录"></a>删除不需要的目录</h3><p>在<code>$(COCOS2DX_ROOT)/template</code>复制份<code>cpp-template-default</code>模板，改名为<code>cpp-template-prebuilt</code></p>
+<p>由于我只需要ios和android,所以我可以删除其他目录，然后修改模板配置<code>cocos-project-template.json</code></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">      <span class="attr">&quot;do_default&quot;</span>:&#123;</span><br><span class="line">         <span class="attr">&quot;project_rename&quot;</span>:&#123;</span><br><span class="line">            <span class="attr">&quot;src_project_name&quot;</span>:<span class="string">&quot;HelloCpp&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;files&quot;</span>:[</span><br><span class="line">               <span class="string">&quot;proj.ios_mac/PROJECT_NAME.xcodeproj&quot;</span></span><br><span class="line">            ]</span><br><span class="line">         &#125;,</span><br><span class="line">         <span class="attr">&quot;project_replace_project_name&quot;</span>:&#123;</span><br><span class="line">            <span class="attr">&quot;src_project_name&quot;</span>:<span class="string">&quot;HelloCpp&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;files&quot;</span>:[</span><br><span class="line">               <span class="string">&quot;Classes/AppDelegate.cpp&quot;</span>,</span><br><span class="line">               <span class="string">&quot;proj.android-studio/settings.gradle&quot;</span>,</span><br><span class="line">               <span class="string">&quot;proj.android-studio/app/res/values/strings.xml&quot;</span>,</span><br><span class="line">               <span class="string">&quot;proj.ios_mac/ios/main.m&quot;</span>,</span><br><span class="line">               <span class="string">&quot;proj.ios_mac/ios/Prefix.pch&quot;</span>,</span><br><span class="line">               <span class="string">&quot;proj.ios_mac/PROJECT_NAME.xcodeproj/project.pbxproj&quot;</span></span><br><span class="line">            ]</span><br><span class="line">         &#125;,</span><br><span class="line">         <span class="attr">&quot;project_replace_package_name&quot;</span>:&#123;</span><br><span class="line">            <span class="attr">&quot;src_package_name&quot;</span>:<span class="string">&quot;org.cocos2dx.hellocpp&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;files&quot;</span>:[</span><br><span class="line">               <span class="string">&quot;proj.android-studio/app/build.gradle&quot;</span>,</span><br><span class="line">               <span class="string">&quot;proj.android-studio/app/AndroidManifest.xml&quot;</span></span><br><span class="line">            ]</span><br><span class="line">         &#125;,</span><br><span class="line">         <span class="attr">&quot;project_replace_ios_bundleid&quot;</span>: &#123;</span><br><span class="line">            <span class="attr">&quot;src_bundle_id&quot;</span>: <span class="string">&quot;org.cocos2dx.hellocpp&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;files&quot;</span>: [</span><br><span class="line">               <span class="string">&quot;proj.ios_mac/ios/Info.plist&quot;</span></span><br><span class="line">            ]</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;change_orientation&quot;</span>: &#123;</span><br><span class="line">         <span class="attr">&quot;modify_files&quot;</span>: [</span><br><span class="line">            &#123;</span><br><span class="line">               <span class="attr">&quot;file_path&quot;</span>: <span class="string">&quot;Classes/AppDelegate.cpp&quot;</span>,</span><br><span class="line">               <span class="attr">&quot;pattern&quot;</span>: <span class="string">&quot;static\\s+cocos2d\\:\\:Size\\s+([a-zA-Z_\\d]+)\\s*=\\s*cocos2d\\:\\:Size\\(\\s*(\\d+),\\s*(\\d+)\\)&quot;</span>,</span><br><span class="line">               <span class="attr">&quot;replace_string&quot;</span>: <span class="string">&quot;static cocos2d::Size \\1 = cocos2d::Size(\\3, \\2)&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">               <span class="attr">&quot;file_path&quot;</span>: <span class="string">&quot;proj.ios_mac/ios/Info.plist&quot;</span>,</span><br><span class="line">               <span class="attr">&quot;pattern&quot;</span>: <span class="string">&quot;UIInterfaceOrientationLandscapeRight&quot;</span>,</span><br><span class="line">               <span class="attr">&quot;replace_string&quot;</span>: <span class="string">&quot;UIInterfaceOrientationPortrait&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">               <span class="attr">&quot;file_path&quot;</span>: <span class="string">&quot;proj.ios_mac/ios/Info.plist&quot;</span>,</span><br><span class="line">               <span class="attr">&quot;pattern&quot;</span>: <span class="string">&quot;UIInterfaceOrientationLandscapeLeft&quot;</span>,</span><br><span class="line">               <span class="attr">&quot;replace_string&quot;</span>: <span class="string">&quot;UIInterfaceOrientationPortraitUpsideDown&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">               <span class="attr">&quot;file_path&quot;</span>: <span class="string">&quot;proj.android-studio/app/AndroidManifest.xml&quot;</span>,</span><br><span class="line">               <span class="attr">&quot;pattern&quot;</span>: <span class="string">&quot;android:screenOrientation=\\\&quot;.*\\\&quot;&quot;</span>,</span><br><span class="line">               <span class="attr">&quot;replace_string&quot;</span>: <span class="string">&quot;android:screenOrientation=\&quot;portrait\&quot;&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">         ]</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="添加-gitignore"><a href="#添加-gitignore" class="headerlink" title="添加.gitignore"></a>添加.gitignore</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"># Created by .ignore support plugin (hsz.mobi)</span><br><span class="line">### cocos2dx template</span><br><span class="line">### C++ template</span><br><span class="line"># Prerequisites</span><br><span class="line">*.d</span><br><span class="line"># Compiled Object files</span><br><span class="line">*.slo</span><br><span class="line">*.lo</span><br><span class="line">*.o</span><br><span class="line">*.obj</span><br><span class="line"># Precompiled Headers</span><br><span class="line">*.gch</span><br><span class="line">*.pch</span><br><span class="line"># Compiled Dynamic libraries</span><br><span class="line">*.so</span><br><span class="line">*.dylib</span><br><span class="line">*.dll</span><br><span class="line"># Fortran module files</span><br><span class="line">*.mod</span><br><span class="line">*.smod</span><br><span class="line"># Compiled Static libraries</span><br><span class="line">*.lai</span><br><span class="line">*.la</span><br><span class="line">*.a</span><br><span class="line">*.lib</span><br><span class="line"># Executables</span><br><span class="line">*.exe</span><br><span class="line">*.out</span><br><span class="line">*.app</span><br><span class="line">### Xcode template</span><br><span class="line"># Xcode</span><br><span class="line">#</span><br><span class="line"># gitignore contributors: remember to update Global&#x2F;Xcode.gitignore, Objective-C.gitignore &amp; Swift.gitignore</span><br><span class="line">## Build generated</span><br><span class="line">build&#x2F;</span><br><span class="line">DerivedData&#x2F;</span><br><span class="line">## Various settings</span><br><span class="line">*.pbxuser</span><br><span class="line">!default.pbxuser</span><br><span class="line">*.mode1v3</span><br><span class="line">!default.mode1v3</span><br><span class="line">*.mode2v3</span><br><span class="line">!default.mode2v3</span><br><span class="line">*.perspectivev3</span><br><span class="line">!default.perspectivev3</span><br><span class="line">xcuserdata&#x2F;</span><br><span class="line">## Other</span><br><span class="line">*.moved-aside</span><br><span class="line">*.xccheckout</span><br><span class="line">*.xcscmblueprint</span><br></pre></td></tr></table></figure>
+
+<h2 id="模板项目配置"><a href="#模板项目配置" class="headerlink" title="模板项目配置"></a>模板项目配置</h2><h3 id="Xcode"><a href="#Xcode" class="headerlink" title="Xcode"></a>Xcode</h3><ul>
+<li><p>导入libcocos2d IOS.a静态链接库</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/10854156/how-to-create-variables-for-use-in-xcode-build-settings-values">参考</a>添加Xcode自定义COCOS2DX_ROOT变量</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://discuss.cocos2d-x.org/t/how-to-speed-up-cocos2d-x-build-with-prebuilt-lib/23402/119">参考</a>配置Header Search Paths</p>
+</li>
+<li><p>配置Library Search Paths</p>
+</li>
+</ul>
+<h3 id="Android-Studio"><a href="#Android-Studio" class="headerlink" title="Android Studio"></a>Android Studio</h3><h4 id="Gradle配置"><a href="#Gradle配置" class="headerlink" title="Gradle配置"></a>Gradle配置</h4><p>编辑<code>gradle/wrapper/gradle-wrapper.properties</code>,修改下面行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https\:&#x2F;&#x2F;services.gradle.org&#x2F;distributions&#x2F;gradle-2.14.1-all.zip</span><br></pre></td></tr></table></figure>
+
+<h4 id="编辑Android-mk"><a href="#编辑Android-mk" class="headerlink" title="编辑Android.mk"></a>编辑Android.mk</h4><figure class="highlight mk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#$(call import-add-path,$(LOCAL_PATH)/../../../cocos2d)</span></span><br><span class="line"><span class="comment">#$(call import-add-path,$(LOCAL_PATH)/../../../cocos2d/external)</span></span><br><span class="line"><span class="comment">#$(call import-add-path,$(LOCAL_PATH)/../../../cocos2d/cocos)</span></span><br><span class="line"><span class="comment">#$(call import-add-path,$(LOCAL_PATH)/../../../cocos2d/cocos/audio/include)</span></span><br><span class="line"><span class="comment">#$(call import-module,.)</span></span><br><span class="line"><span class="variable">$(<span class="built_in">call</span> import-module,./prebuilt-mk)</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="编辑build-cfg-json"><a href="#编辑build-cfg-json" class="headerlink" title="编辑build-cfg.json"></a>编辑build-cfg.json</h4><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;ndk_module_path&quot;</span> :[</span><br><span class="line">        <span class="string">&quot;/Users/bill/sdks/Cocos2d-x/cocos2d-x-3.13.1&quot;</span>,</span><br><span class="line">        <span class="string">&quot;/Users/bill/sdks/Cocos2d-x/cocos2d-x-3.13.1/cocos/prebuilt-mk&quot;</span>,</span><br><span class="line">        <span class="string">&quot;/Users/bill/sdks/Cocos2d-x/cocos2d-x-3.13.1/cocos&quot;</span>,</span><br><span class="line">        <span class="string">&quot;/Users/bill/sdks/Cocos2d-x/cocos2d-x-3.13.1/external&quot;</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">&quot;copy_resources&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">&quot;from&quot;</span>: <span class="string">&quot;../Resources&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;to&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="编辑prebuilt-mk"><a href="#编辑prebuilt-mk" class="headerlink" title="编辑prebuilt-mk"></a>编辑prebuilt-mk</h4><p>编辑<code>$(COCOS2DX_ROOT)/cocos/prebuilt-mk/Android.mk</code></p>
+<figure class="highlight mk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># $(call import-module, android/cpufeatures/prebuilt-mk)</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="添加cocos2dx类库"><a href="#添加cocos2dx类库" class="headerlink" title="添加cocos2dx类库"></a>添加cocos2dx类库</h4><p>把<code>$(COCOS2DX_ROOT)/cocos/platform/android/</code>下对应文件拷贝到模板对应目录</p>
+<h2 id="新建模板项目"><a href="#新建模板项目" class="headerlink" title="新建模板项目"></a>新建模板项目</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cocos new SocketDemo -p my.first.prebuilt -l cpp -t prebuilt</span><br></pre></td></tr></table></figure>
+
+<p>生成包体大小5.4M，开箱即用，编译IOS版 6秒。安卓版慢一点，要1分钟左右。我看LOG是还在编译一些类库。不过这已经是质的飞跃了！<br>以后找网上的好代码，直接建个新工程测试就可以了！</p>
+<h2 id="遗留问题"><a href="#遗留问题" class="headerlink" title="遗留问题"></a>遗留问题</h2><blockquote>
+<p>用我的模板生成的工程Schemes名字没有替换成我工程的名字（默认模板是可以的），无法直接运行，需要进Edit Scheme，选择Executable。然后就可以运行</p>
+</blockquote>
+<blockquote>
+<p>找到<code>$(COCOS2DX_ROOT)/templates/cpp-template-prebuilt/HelloCpp.xcodeproj</code>，右键显示包内容，删除xcuserdata文件夹，一切OK!</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/cocos/" rel="tag"># cocos</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/04/05/Hexo-%E7%89%88%E6%9C%AC%E7%BB%B4%E6%8A%A4/" rel="prev" title="Hexo 版本维护">
+      <i class="fa fa-chevron-left"></i> Hexo 版本维护
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/04/08/Protobuf-%E5%AE%89%E8%A3%85%E4%B8%8E%E5%85%A5%E9%97%A8/" rel="next" title="Protobuf 安装与入门">
+      Protobuf 安装与入门 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E7%BC%96%E8%AF%91%E7%B1%BB%E5%BA%93"><span class="nav-number">2.</span> <span class="nav-text">预编译类库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E6%9D%BF"><span class="nav-number">3.</span> <span class="nav-text">自定义模板</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E4%B8%8D%E9%9C%80%E8%A6%81%E7%9A%84%E7%9B%AE%E5%BD%95"><span class="nav-number">3.1.</span> <span class="nav-text">删除不需要的目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0-gitignore"><span class="nav-number">3.2.</span> <span class="nav-text">添加.gitignore</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E9%A1%B9%E7%9B%AE%E9%85%8D%E7%BD%AE"><span class="nav-number">4.</span> <span class="nav-text">模板项目配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Xcode"><span class="nav-number">4.1.</span> <span class="nav-text">Xcode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android-Studio"><span class="nav-number">4.2.</span> <span class="nav-text">Android Studio</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Gradle%E9%85%8D%E7%BD%AE"><span class="nav-number">4.2.1.</span> <span class="nav-text">Gradle配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E8%BE%91Android-mk"><span class="nav-number">4.2.2.</span> <span class="nav-text">编辑Android.mk</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E8%BE%91build-cfg-json"><span class="nav-number">4.2.3.</span> <span class="nav-text">编辑build-cfg.json</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E8%BE%91prebuilt-mk"><span class="nav-number">4.2.4.</span> <span class="nav-text">编辑prebuilt-mk</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0cocos2dx%E7%B1%BB%E5%BA%93"><span class="nav-number">4.2.5.</span> <span class="nav-text">添加cocos2dx类库</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA%E6%A8%A1%E6%9D%BF%E9%A1%B9%E7%9B%AE"><span class="nav-number">5.</span> <span class="nav-text">新建模板项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%97%E7%95%99%E9%97%AE%E9%A2%98"><span class="nav-number">6.</span> <span class="nav-text">遗留问题</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Genox Wang"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Genox Wang</p>
+  <div class="site-description" itemprop="description">绽放时厚积薄发 等待时心如止水</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备16022482号-2 </a>
+      <img src="/images/beian.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011702006305" rel="noopener" target="_blank">沪公安备案31011702006305号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Genox Wang</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
